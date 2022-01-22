@@ -1,0 +1,25 @@
+#!/bin/bash
+#required for dovecot compilation
+
+#---BUSTER FOR DOVECOT
+cpucount=$(nproc --all)
+sudo apt install -y qemu qemu-user-static debootstrap
+sudo dpkg --add-architecture armhf
+sudo apt update
+sudo mkdir /debarm
+sudo debootstrap --arch=armhf buster /debarm 
+sudo chroot /debarm #enter chroot
+
+#---Bullseye for SOGO, SOPE , RSPAMD and others
+
+sudo mkdir /armbuls
+sudo debootstrap --arch armhf bullseye /armbuls
+sudo chroot armbuls
+useradd build
+groupadd build
+usermod -aG build build
+mkdir /build
+mkdir /build/rspamd
+mkdir /build/rpsamd.build
+chown root:build /build
+chmod g+w -R /build
